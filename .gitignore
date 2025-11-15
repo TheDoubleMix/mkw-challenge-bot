@@ -1,5 +1,5 @@
 .env
 .vscode/
 __pycache__/
-chal_num
+config.json
 ghosts/

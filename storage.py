@@ -1,17 +1,32 @@
-import os
 from rkgparser import RKG
+import os
+import json
+
 def load_chal_num() -> int:
     try:
-        with open("chal_num", "r") as f:
-            return int(f.read().strip())
+        with open("config.json", "r") as f:
+            return int(json.load(f)["challenge_num"])
     except FileNotFoundError:
         return 0
     except ValueError:
         return 0
 
 def save_chal_num(num: int):
-    with open("chal_num", "w") as f:
-        f.write(str(num))
+    with open("config.json", "w") as f:
+        json.dump({"challenge_num": num}, f)
+
+def save_channel_id(channel_id: int):
+    with open("config.json", "w") as f:
+        json.dump({"counting_channel": channel_id}, f)
+
+def load_channel_id() -> int:
+    try:
+        with open("config.json", "r") as f:
+            return int(json.load(f)["counting_channel"])
+    except FileNotFoundError:
+        return 0
+    except ValueError:
+        return 0
 
 
 GHOSTS_DIR =  "./ghosts/"

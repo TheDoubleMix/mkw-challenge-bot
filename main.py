@@ -4,7 +4,7 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
-from storage import load_chal_num, save_chal_num, submit_time
+from storage import load_chal_num, save_chal_num, submit_time, load_channel_id, save_channel_id
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -24,8 +24,11 @@ async def on_ready():
 
 global chal_num
 global common_rules
+global channel_id
 
 chal_num = load_chal_num()
+channel_id = load_channel_id()
+
 
 common_rules = (
     "## **COMMON RULES:**\n"
@@ -50,7 +53,10 @@ class View(discord.ui.View):
         global chal_num
         chal_num += 1
         save_chal_num(chal_num)
-        channel = bot.get_channel(1433853482267447407) # replace with your actual bot channel
+        if channel_id != 0:
+            channel = bot.get_channel(channel_id)
+        else:
+            raise RuntimeError("command 'challenge' ran without channel id being set!")
         await channel.send((
         f"# **MKWii Challenge #{chal_num}:**\n"
         f"Submitted by <@{interaction.user.id}>\n\n"
@@ -102,6 +108,9 @@ async def challenge(interaction: discord.Interaction, start_time: str, end_time:
 @bot.tree.command(name="submit", description="Submit a time")
 async def submit(interaction: discord.Interaction, file: discord.Attachment):
 
+    if channel_id == 0:
+        await interaction.response.send_message("The Discord bot is not ready yet.")
+
     if os.path.splitext(file.filename)[1] != ".rkg":
         await interaction.response.send_message("File needs to be a \".rkg\" file.")
     await interaction.response.send_message(f"<@{interaction.user.id}> Submitted a time!")
@@ -109,6 +118,11 @@ async def submit(interaction: discord.Interaction, file: discord.Attachment):
     time = submit_time(file.filename, rkg)
     await interaction.edit_original_response(content=f"<@{interaction.user.id}> Submitted a time of {time}!")
     
-    
+@bot.tree.command(name="setchannel", description="Set the challenge channel for this bot")
+async def setchannel(interaction: discord.Interaction):
+    await interaction.response.send_message(f"Setting channel id to {interaction.channel.id}", ephemeral=True)
+    save_channel_id(interaction.channel.id)
+    await interaction.edit_original_response(content=f"Channel id set to {interaction.channel.id}")
+
 
 bot.run(os.getenv("DISCORD_BOT_TOKEN")) # add DISCORD_BOT_TOKEN to your .env file

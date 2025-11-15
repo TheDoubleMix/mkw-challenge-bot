@@ -10,26 +10,33 @@ A Discord bot for creating Mario Kart Wii challenges.
 ## How to use
 
 - Clone the repository
+
 ```bash
 git clone https://github.com/TheDoubleMix/mkw-challenge-bot.git
 cd mkw-challenge-bot
 ```
-- Install dependencies
+
+1. Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-- Add a DISCORD_BOT_TOKEN to your `.env` file
+2. Add a DISCORD_BOT_TOKEN to your `.env` file
 
 example of a `.env` file:
+
 ```
 DISCORD_BOT_TOKEN=<insert bot toke here>
 ```
-- Run `main.py`
+
+3. Run `main.py`
 
 ```bash
 python main.py
 ```
+
+4. Set the channel for the challenges via `/setchannel`
 
 ## License
 
