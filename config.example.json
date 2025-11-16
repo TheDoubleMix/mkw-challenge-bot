@@ -2,6 +2,6 @@
   "challenge_channel": "",
   "staff_channel": "",
   "submit_channel": "",
-  "admin_role_id": "",
-  "challenge_number": 0
+  "challenge_staff_role": "",
+  "challenge_num": 0
 }
