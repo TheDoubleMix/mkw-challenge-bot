@@ -48,7 +48,7 @@ python main.py
 
 ## Discord Bot Permissions
 
-When inviting the bot, enable these
+When inviting the bot, enable these in the discord developer portal.
 
 ### OAuth2 Scopes:
 
@@ -60,6 +60,10 @@ When inviting the bot, enable these
 - `View Channels`
 - `Send Messages`
 - `Use Slash Commands`
+
+### Channel Restrictions
+
+Set the discord bot role to be allowed in these channels
 
 ## License
 

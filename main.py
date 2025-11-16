@@ -4,7 +4,7 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
-from storage import load_chal_num, save_chal_num, load_challenge_channel, submit_time
+from storage import load_chal_num, save_chal_num, load_challenge_channel, load_challenge_staff_role, load_submit_channel, submit_time
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -84,7 +84,10 @@ class View(discord.ui.View):
 )
 
 @bot.tree.command(name="challenge", description="Hosts a MKWii Challenge.")
+@commands.has_role(load_challenge_staff_role())
 async def challenge(interaction: discord.Interaction, start_time: str, end_time: str, track: str, characters: str, challenge_rules: str):
+    if interaction.channel.id != load_challenge_channel():
+        await interaction.response.send_message("Wrong channel!", ephemeral=True)
 
     challenge_rules = "- " + challenge_rules.replace("/", "\n- ")
 
@@ -107,10 +110,9 @@ async def challenge(interaction: discord.Interaction, start_time: str, end_time:
 
 @bot.tree.command(name="submit", description="Submit a time")
 async def submit(interaction: discord.Interaction, file: discord.Attachment):
-
-    if channel_id == 0:
-        await interaction.response.send_message("The Discord bot is not ready yet.")
-
+    
+    if interaction.channel.id != load_submit_channel():
+        await interaction.response.send_message("Wrong channel!", ephemeral=True)
     if os.path.splitext(file.filename)[1] != ".rkg":
         await interaction.response.send_message("File needs to be a \".rkg\" file.")
     await interaction.response.send_message(f"<@{interaction.user.id}> Submitted a time!")
