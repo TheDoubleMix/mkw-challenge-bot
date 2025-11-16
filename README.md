@@ -63,7 +63,11 @@ When inviting the bot, enable these in the discord developer portal.
 
 ### Channel Restrictions
 
-Set the discord bot role to be allowed in these channels
+Set the discord bot role to be allowed in these channels:
+
+- **Challenge Channel**
+- **Challenge Staff Channel**
+- **Submit Channel**
 
 ## License
 
