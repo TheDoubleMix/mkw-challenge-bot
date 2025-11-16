@@ -15,7 +15,7 @@ REQUIRED_KEYS = [
     "submit_channel"
 ]
 
-def load_config() -> dict[str, int]:
+def load_config() -> dict:
     if not os.path.exists(CONFIG_PATH):
         raise FileNotFoundError(
             f"{CONFIG_PATH} not found.\n"
@@ -38,7 +38,7 @@ def load_config() -> dict[str, int]:
 
     return config
 
-def save_config(config: dict[str, int]):
+def save_config(config: dict):
     # Safely save the configuration via temp files to avoid corruption
     dir_name = os.path.dirname(CONFIG_PATH) or "."
     with tempfile.NamedTemporaryFile("w", delete=False, dir=dir_name) as temp_file:
