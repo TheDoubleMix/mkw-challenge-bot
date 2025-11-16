@@ -4,7 +4,7 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
-from storage import load_chal_num, save_chal_num, submit_time, load_channel_id, save_channel_id
+from storage import load_chal_num, save_chal_num, load_challenge_channel, submit_time
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -27,7 +27,7 @@ global common_rules
 global channel_id
 
 chal_num = load_chal_num()
-channel_id = load_channel_id()
+channel_id = load_challenge_channel()
 
 
 common_rules = (
@@ -117,12 +117,5 @@ async def submit(interaction: discord.Interaction, file: discord.Attachment):
     rkg = await file.read()
     time = submit_time(file.filename, rkg)
     await interaction.edit_original_response(content=f"<@{interaction.user.id}> Submitted a time of {time}!")
-    
-@bot.tree.command(name="setchannel", description="Set the challenge channel for this bot")
-async def setchannel(interaction: discord.Interaction):
-    await interaction.response.send_message(f"Setting channel id to {interaction.channel.id}", ephemeral=True)
-    save_channel_id(interaction.channel.id)
-    await interaction.edit_original_response(content=f"Channel id set to {interaction.channel.id}")
-
 
 bot.run(os.getenv("DISCORD_BOT_TOKEN")) # add DISCORD_BOT_TOKEN to your .env file
